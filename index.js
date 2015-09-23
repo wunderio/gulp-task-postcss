@@ -1,7 +1,7 @@
 'use strict';
 
 var path = require('path');
-var defaults = require('lodash.defaults');
+var defaultsDeep = require('lodash.defaultsdeep');
 var sourcemaps = require('gulp-sourcemaps');
 var notify = require('gulp-notify');
 var postcss = require('gulp-postcss');
@@ -11,22 +11,27 @@ var rename = require('gulp-rename');
 var autoprefixer = require('autoprefixer');
 
 module.exports = function (gulp, gulpConfig) {
+
+  gulpConfig = gulpConfig || {};
+
   // Merge default config with gulp config.
   var defaultConfig = {
-    src: '/postcss/**/*.p.css',
-    dest: '/css',
-    processors: {
-      autoprefixer: {
-        browsers: ['last 2 versions']
+    stylesheets: {
+      src: '/postcss/**/*.p.css',
+      dest: '/css',
+      processors: {
+        autoprefixer: {
+          browsers: ['last 2 versions']
+        }
+      },
+      notify: {
+        title: 'Wunderkraut',
+        message: 'PostCSS compiled.'
       }
-    },
-    notify: {
-      title: 'Wunderkraut',
-      message: 'PostCSS compiled.'
     }
   };
 
-  var config = defaults(gulpConfig.stylesheets, defaultConfig);
+  var config = defaultsDeep(gulpConfig, defaultConfig).stylesheets;
 
   // Default task mapping.
   gulp.task('stylesheets', ['postcss-compile']);
