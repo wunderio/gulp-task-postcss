@@ -9,22 +9,41 @@ npm install --save-dev wunderkraut/gulp-task-postcss
 ```
 
 ## Usage
+
+### Basic usage
+
 ```js
 // Require gulp.
 var gulp = require('gulp')
 
-// Configurate.
-var gulpConfig {
+// Require task module and pass gulp to provide the gulp tasks.
+require('gulp-task-postcss')(gulp)
+```
+
+### Advanced usage
+You can also pass a configuration to the task. This allows you to overwrite the default configuration and provide other configuration like a base path for your files.
+
+#### gulpfile.js
+```js
+var gulp = require('gulp')
+var gulpConfig = require('./gulpconfig')
+
+// Just pass the configuration object as second parameter.
+require('gulp-task-postcss')(gulp, gulpConfig)
+```
+
+#### gulpconfig.js
+```js
+module.exports = {
+  // Basic configuration.
   basePath: '.',
-  // Overwrite default config
+
+  // Overwrite default configurations.
   stylesheets: {
     src: '/assets/postcss/**/*.css',
     dest: '/assets/css'
   }
 }
-
-// Require task module to provide the gulp tasks.
-require('gulp-task-postcss')(gulp, gulpConfig)
 ```
 
 ## Contributing
