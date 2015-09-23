@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/wunderkraut/gulp-task-postcss/issues"
   },
-  "devDependencies": {
+  "dependencies": {
     "autoprefixer": "^6.0.3",
     "gulp": "^3.9.0",
     "gulp-notify": "^2.2.0",
