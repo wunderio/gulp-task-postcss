@@ -12,7 +12,7 @@ var autoprefixer = require('autoprefixer');
 
 module.exports = function (gulp, gulpConfig) {
 
-  gulpConfig = gulpConfig || {};
+  gulpConfig = gulpConfig || { basePath: '.' };
 
   // Merge default config with gulp config.
   var defaultConfig = {
