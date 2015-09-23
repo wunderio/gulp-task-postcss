@@ -8,6 +8,7 @@ var defaults = require('lodash.defaults');
 var sourcemaps = require('gulp-sourcemaps');
 var notify = require('gulp-notify');
 var postcss = require('gulp-postcss');
+var rename = require('gulp-rename');
 
 // PostCSS plugins
 var autoprefixer = require('autoprefixer');
@@ -43,6 +44,10 @@ gulp.task('postcss-compile', function () {
     .pipe(sourcemaps.init())
     .pipe(postcss(processors))
     .pipe(sourcemaps.write())
+    .pipe(rename(function (path) {
+      // Remove ".p" from filename.
+      path.basename = path.basename.substr(0, path.basename.length -2);
+    }))
     .pipe(gulp.dest(projectConfig.basePath + config.dest))
     .pipe(notify({
       title: config.notify.title,
