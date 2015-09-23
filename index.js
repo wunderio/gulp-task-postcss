@@ -1,6 +1,6 @@
 'use strict';
 
-var projectConfig = require('../../config');
+var gulpConfig = require('../../gulpconfig');
 
 var gulp = require('gulp');
 var path = require('path');
@@ -13,7 +13,7 @@ var rename = require('gulp-rename');
 // PostCSS plugins
 var autoprefixer = require('autoprefixer');
 
-// Merge default & project config
+// Merge default config with gulp config.
 var defaultConfig = {
   src: '/postcss/**/*.p.css',
   dest: '/css',
@@ -28,7 +28,7 @@ var defaultConfig = {
   }
 };
 
-var config = defaults(projectConfig.stylesheets, defaultConfig);
+var config = defaults(gulpConfig.stylesheets, defaultConfig);
 
 // Default task mapping.
 gulp.task('stylesheets', ['postcss-compile']);
@@ -40,7 +40,7 @@ gulp.task('postcss-compile', function () {
     autoprefixer(config.processors.autoprefixer),
   ];
 
-  return gulp.src(projectConfig.basePath + config.src)
+  return gulp.src(gulpConfig.basePath + config.src)
     .pipe(sourcemaps.init())
     .pipe(postcss(processors))
     .pipe(sourcemaps.write())
@@ -48,7 +48,7 @@ gulp.task('postcss-compile', function () {
       // Remove ".p" from filename.
       path.basename = path.basename.substr(0, path.basename.length -2);
     }))
-    .pipe(gulp.dest(projectConfig.basePath + config.dest))
+    .pipe(gulp.dest(gulpConfig.basePath + config.dest))
     .pipe(notify({
       title: config.notify.title,
       message: config.notify.message,
