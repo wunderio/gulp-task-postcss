@@ -1,0 +1,23 @@
+{
+  "name": "gulp-task-postcss",
+  "version": "0.0.1",
+  "description": "A gulp task for PostCSS processing.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wunderkraut/gulp-task-postcss"
+  },
+  "bugs": {
+    "url": "https://github.com/wunderkraut/gulp-task-postcss/issues"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.0.3",
+    "gulp": "^3.9.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-postcss": "^6.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.5.2",
+    "lodash.defaults": "^3.1.2"
+  },
+  "license": "MIT"
+}
