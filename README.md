@@ -4,12 +4,12 @@ Gulp task PostCSS
 > A gulp task for PostCSS processing.
 
 ## Installation
-```
+```sh
 npm install --save-dev wunderkraut/gulp-task-postcss
 ```
 
 ## Usage
-```
+```js
 require('gulp-task-postcss')()
 ```
 
