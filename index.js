@@ -28,30 +28,31 @@ var defaultConfig = {
   }
 };
 
-var config = defaults(gulpConfig.stylesheets, defaultConfig);
+module.exports = function () {
+  var config = defaults(gulpConfig.stylesheets, defaultConfig);
 
-// Default task mapping.
-gulp.task('stylesheets', ['postcss-compile']);
+  // Default task mapping.
+  gulp.task('stylesheets', ['postcss-compile']);
 
+  // PostCSS with sourcemaps.
+  gulp.task('postcss-compile', function () {
+    var processors = [
+      autoprefixer(config.processors.autoprefixer),
+    ];
 
-// PostCSS with sourcemaps.
-gulp.task('postcss-compile', function () {
-  var processors = [
-    autoprefixer(config.processors.autoprefixer),
-  ];
-
-  return gulp.src(gulpConfig.basePath + config.src)
-    .pipe(sourcemaps.init())
-    .pipe(postcss(processors))
-    .pipe(sourcemaps.write())
-    .pipe(rename(function (path) {
-      // Remove ".p" from filename.
-      path.basename = path.basename.substr(0, path.basename.length -2);
-    }))
-    .pipe(gulp.dest(gulpConfig.basePath + config.dest))
-    .pipe(notify({
-      title: config.notify.title,
-      message: config.notify.message,
-      sound: false
-    }));
-});
+    return gulp.src(gulpConfig.basePath + config.src)
+      .pipe(sourcemaps.init())
+      .pipe(postcss(processors))
+      .pipe(sourcemaps.write())
+      .pipe(rename(function (path) {
+        // Remove ".p" from filename.
+        path.basename = path.basename.substr(0, path.basename.length -2);
+      }))
+      .pipe(gulp.dest(gulpConfig.basePath + config.dest))
+      .pipe(notify({
+        title: config.notify.title,
+        message: config.notify.message,
+        sound: false
+      }));
+  });
+};
