@@ -5,7 +5,7 @@ Gulp task PostCSS
 
 ## Usage
 ```
-require('gulp-task-postcss')
+require('gulp-task-postcss')()
 ```
 
 ## Contributing
