@@ -2,6 +2,7 @@
 
 var path = require('path');
 var defaultsDeep = require('lodash.defaultsdeep');
+var map = require('lodash.map');
 var sourcemaps = require('gulp-sourcemaps');
 var notify = require('gulp-notify');
 var postcss = require('gulp-postcss');
@@ -38,9 +39,9 @@ module.exports = function (gulp, gulpConfig) {
 
   // PostCSS with sourcemaps.
   gulp.task('postcss-compile', function () {
-    var processors = [
-      autoprefixer(config.processors.autoprefixer),
-    ];
+    var processors = map(Object.keys(config.processors), function (processor) {
+      return require(processor)(config.processors[processor]);
+    });
 
     return gulp.src(gulpConfig.basePath + config.src)
       .pipe(sourcemaps.init())
