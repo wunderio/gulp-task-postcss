@@ -7,6 +7,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var notify = require('gulp-notify');
 var postcss = require('gulp-postcss');
 var rename = require('gulp-rename');
+var filter = require('gulp-filter');
 
 // PostCSS plugins
 var autoprefixer = require('autoprefixer');
@@ -43,7 +44,10 @@ module.exports = function (gulp, gulpConfig) {
       return require(processor)(config.processors[processor]);
     });
 
-    return gulp.src(gulpConfig.basePath + config.src)
+    return gulp.src(path.join(gulpConfig.basePath, config.src))
+      .pipe(filter(function (file) {
+        return !/^_/.test(path.basename(file.path));
+      }))
       .pipe(sourcemaps.init())
       .pipe(postcss(processors))
       .pipe(sourcemaps.write())
@@ -51,7 +55,7 @@ module.exports = function (gulp, gulpConfig) {
         // Remove ".p" from filename.
         path.basename = path.basename.substr(0, path.basename.length -2);
       }))
-      .pipe(gulp.dest(gulpConfig.basePath + config.dest))
+      .pipe(gulp.dest(path.join(gulpConfig.basePath, config.dest)))
       .pipe(notify({
         title: config.notify.title,
         message: config.notify.message,
