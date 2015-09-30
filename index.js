@@ -35,16 +35,13 @@ module.exports = function (gulp, gulpConfig) {
 
   var config = defaultsDeep(gulpConfig, defaultConfig).stylesheets;
 
-  // Default task mapping.
-  gulp.task('stylesheets', ['postcss-compile']);
-
   // Default watch task.
-  gulp.task('stylesheets-watch', ['stylesheets'], function () {
-    gulp.watch(path.join(gulpConfig.basePath, config.src), ['stylesheets'])
+  gulp.task('postcss-watch', ['postcss'], function () {
+    gulp.watch(path.join(gulpConfig.basePath, config.src), ['postcss'])
   });
 
   // PostCSS with sourcemaps.
-  gulp.task('postcss-compile', function () {
+  gulp.task('postcss', function () {
     var processors = map(Object.keys(config.processors), function (processor) {
       return require(processor)(config.processors[processor]);
     });
