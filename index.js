@@ -38,6 +38,11 @@ module.exports = function (gulp, gulpConfig) {
   // Default task mapping.
   gulp.task('stylesheets', ['postcss-compile']);
 
+  // Default watch task.
+  gulp.task('stylesheets-watch', ['stylesheets'], function () {
+    gulp.watch(path.join(gulpConfig.basePath, config.src), ['stylesheets'])
+  });
+
   // PostCSS with sourcemaps.
   gulp.task('postcss-compile', function () {
     var processors = map(Object.keys(config.processors), function (processor) {
