@@ -19,7 +19,8 @@
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.5.2",
     "lodash.defaultsdeep": "^3.10.0",
-    "lodash.map": "^3.1.4"
+    "lodash.map": "^3.1.4",
+    "node-notifier": "^4.3.1"
   },
   "license": "MIT"
 }
