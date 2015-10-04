@@ -10,9 +10,6 @@ var postcss = require('gulp-postcss');
 var rename = require('gulp-rename');
 var filter = require('gulp-filter');
 
-// PostCSS plugins
-var autoprefixer = require('autoprefixer');
-
 module.exports = function (gulp, gulpConfig) {
 
   gulpConfig = gulpConfig || { basePath: '.' };
