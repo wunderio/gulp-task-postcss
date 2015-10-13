@@ -80,8 +80,12 @@ module.exports = function (gulp, gulpConfig) {
       .pipe(postcssStream)
       .pipe(sourcemaps.write())
       .pipe(rename(function (path) {
-        // Remove ".p" from filename.
-        path.basename = path.basename.substr(0, path.basename.length -2);
+        // Remove ".p" from filename if exists.
+        var remove = '.p';
+        
+        if (path.basename.substr(path.basename.length - remove.length) == remove) {
+          path.basename = path.basename.substr(0, path.basename.length - remove.length);
+        }
       }))
       .pipe(gulp.dest(path.join(gulpConfig.basePath, config.dest)))
       .on('end', function () {
