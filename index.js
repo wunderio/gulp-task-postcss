@@ -9,6 +9,10 @@ var sourcemaps = require('gulp-sourcemaps');
 var postcss = require('gulp-postcss');
 var rename = require('gulp-rename');
 var filter = require('gulp-filter');
+var tap = require('gulp-tap');
+var stripSync = require('strip-css-singleline-comments/sync');
+
+var postcssImport = require('postcss-import');
 
 module.exports = function (gulp, gulpConfig) {
 
@@ -45,11 +49,7 @@ module.exports = function (gulp, gulpConfig) {
     });
 
     var errorThrown = false;
-
-    // Create stream to catch postcss errors.
-    var postcssStream = postcss(processors);
-
-    postcssStream.on('error', function (error) {
+    var postcssErrorHandler = function (error) {
       // Log error to console.
       console.error(error.message);
 
@@ -70,13 +70,34 @@ module.exports = function (gulp, gulpConfig) {
       errorThrown = true;
 
       this.emit('end');
-    });
+    };
+
+    // Wrap postcss in a stream to catch postcss errors.
+    var postcssStream = postcss(processors);
+
+    // This stream imports files while removing single line comments from all files.
+    var postcssImportStream = postcss([
+      postcssImport({
+        transform: function (content) {
+          return stripSync(content);
+        }
+      })
+    ]);
+
+    // Attach error handler to streams.
+    postcssStream.on('error', postcssErrorHandler);
+    postcssImportStream.on('error', postcssErrorHandler);
 
     return gulp.src(path.join(gulpConfig.basePath, config.src))
       .pipe(filter(function (file) {
         return !/^_/.test(path.basename(file.path));
       }))
       .pipe(sourcemaps.init())
+      .pipe(tap(function(file) {
+        // Strips all single line comments from the base files.
+        file.contents = new Buffer(stripSync(file.contents));
+      }))
+      .pipe(postcssImportStream)
       .pipe(postcssStream)
       .pipe(sourcemaps.write())
       .pipe(rename(function (path) {
