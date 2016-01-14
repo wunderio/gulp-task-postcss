@@ -5,6 +5,7 @@ var defaultsDeep = require('lodash.defaultsdeep');
 var map = require('lodash.map');
 var notifier = require('node-notifier');
 
+var gulpif = require('gulp-if');
 var sourcemaps = require('gulp-sourcemaps');
 var postcss = require('gulp-postcss');
 var rename = require('gulp-rename');
@@ -28,6 +29,7 @@ module.exports = function (gulp, gulpConfig) {
           browsers: ['last 2 versions']
         }
       },
+      sourcemaps: true,
       notify: {
         title: 'Wunderkraut',
         message: 'PostCSS compiled.'
@@ -92,18 +94,18 @@ module.exports = function (gulp, gulpConfig) {
       .pipe(filter(function (file) {
         return !/^_/.test(path.basename(file.path));
       }))
-      .pipe(sourcemaps.init())
+      .pipe(gulpif(config.sourcemaps, sourcemaps.init()))
       .pipe(tap(function(file) {
         // Strips all single line comments from the base files.
         file.contents = new Buffer(stripSync(file.contents));
       }))
       .pipe(postcssImportStream)
       .pipe(postcssStream)
-      .pipe(sourcemaps.write())
+      .pipe(gulpif(config.sourcemaps, sourcemaps.write()))
       .pipe(rename(function (path) {
         // Remove ".p" from filename if exists.
         var remove = '.p';
-        
+
         if (path.basename.substr(path.basename.length - remove.length) == remove) {
           path.basename = path.basename.substr(0, path.basename.length - remove.length);
         }
