@@ -111,6 +111,7 @@ module.exports = function (gulp, gulpConfig) {
         }
       }))
       .pipe(gulp.dest(path.join(gulpConfig.basePath, config.dest)))
+      .pipe(gulpif(gulpConfig.browserSync !== false, gulpConfig.browserSync.stream({match: "**/*.css"})))
       .on('end', function () {
         if (!errorThrown) {
           notifier.notify({
