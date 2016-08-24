@@ -4,7 +4,7 @@ var path = require('path');
 var defaultsDeep = require('lodash.defaultsdeep');
 var map = require('lodash.map');
 var notifier = require('node-notifier');
-
+var gutil = require('gulp-util');
 var gulpif = require('gulp-if');
 var sourcemaps = require('gulp-sourcemaps');
 var postcss = require('gulp-postcss');
@@ -111,7 +111,7 @@ module.exports = function (gulp, gulpConfig) {
         }
       }))
       .pipe(gulp.dest(path.join(gulpConfig.basePath, config.dest)))
-      .pipe(gulpif(gulpConfig.browserSync !== false, gulpConfig.browserSync.stream({match: "**/*.css"})))
+      .pipe((typeof gulpConfig.browserSync !== 'undefined' && typeof gulpConfig.browserSync.stream === 'function') ? gulpConfig.browserSync.stream({match: "**/*.css"}) : gutil.noop())
       .on('end', function () {
         if (!errorThrown) {
           notifier.notify({
